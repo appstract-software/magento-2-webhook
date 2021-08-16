@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mageplaza
  *
@@ -35,6 +36,7 @@ use Mageplaza\Webhook\Helper\Data;
 use Mageplaza\Webhook\Model\Config\Source\HookType;
 use Mageplaza\Webhook\Model\Config\Source\Status;
 use Mageplaza\Webhook\Model\HookFactory;
+use Magento\Inventory\Model\Source;
 use Mageplaza\Webhook\Model\ResourceModel\CronSchedule\CollectionFactory;
 use Psr\Log\LoggerInterface;
 
@@ -165,6 +167,10 @@ class CronSchedule
                 case HookType::NEW_SHIPMENT:
                     $shipment = $this->helper->getObjectClass(Shipment::class);
                     $item = $shipment->load($eventID);
+                    break;
+                case HookType::UPDATE_STOCK:
+                    $source = $this->helper->getObjectClass(Source::class);
+                    $item = $source->load($eventID);
                     break;
                 case HookType::NEW_CREDITMEMO:
                     $creditmemo = $this->helper->getObjectClass(Creditmemo::class);
